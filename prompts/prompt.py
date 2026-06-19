@@ -1,8 +1,7 @@
 from langchain_groq import ChatGroq
-from langchain_core.prompts import PromptTemplate, load_prompt
+from langchain_core.prompts import load_prompt
 import streamlit as st
 from dotenv import load_dotenv
-import pydantic
 import os
 
 load_dotenv()
@@ -22,6 +21,8 @@ template=load_prompt(project_path)
 
 if st.button('Summarize'):
     #st.text('Random Text')
-    prompt=template.invoke({'country': country, 'number': number })
-    result=model.invoke(prompt)
+    chain=template | model
+    result=chain.invoke({'country': country, 'number': number })
+    #prompt=template.invoke({'country': country, 'number': number })
+    #result=model.invoke(prompt)
     st.write(result.content)
